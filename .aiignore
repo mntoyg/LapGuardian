@@ -1,0 +1,97 @@
+# .aiignore - generic AI assistant ignore list for LapGuardian.
+# Purpose: keep AI coding agents away from generated, binary, and
+# machine-specific files. Every path below is either reproducible from
+# source or contains real data from the developer's own computer.
+#
+# Canonical project rules live in AGENTS.md. Read that first.
+
+# ---------- Generated / reproducible ----------
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.so
+build/
+dist/
+sdist/
+wheels/
+*.egg-info/
+site/
+_build/
+
+# ---------- Tooling caches (zero signal, high token cost) ----------
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.tox/
+.nox/
+.cache/
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# ---------- Lock files (huge, machine-generated) ----------
+uv.lock
+poetry.lock
+requirements*.txt
+Pipfile.lock
+
+# ---------- Real machine data (privacy: do not read) ----------
+# These hold the developer's actual battery/thermal/disk readings,
+# hostname, and user paths. They are never needed to write code.
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+data/
+reports/
+exports/
+*battery-report.html
+*battery-report.xml
+*batteryreport.html
+*batteryreport.xml
+*energy-report.html
+
+# ---------- Secrets ----------
+.env
+.env.*
+*.local.toml
+lapguardian.toml
+secrets/
+*.pem
+*.key
+
+# ---------- Binary assets ----------
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.pdf
+*.zip
+*.gz
+*.whl
+*.mp4
+*.woff
+*.woff2
+
+# ---------- Logs / scratch ----------
+*.log
+logs/
+tmp/
+temp/
+.scratch/
+
+# ---------- VCS / editor ----------
+.git/
+.vscode/
+.idea/
+
+# ---------- NOT ignored on purpose ----------
+# tests/fixtures/  -> golden files are the contract for platform parsers.
+# docs/            -> AGENTS.md, TASKS.md and ARCHITECTURE.md are required reading.
+# schema.sql       -> the storage contract.

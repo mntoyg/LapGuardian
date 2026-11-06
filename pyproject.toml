@@ -1,0 +1,168 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "lapguardian"
+version = "0.0.0"
+description = "Keep your laptop alive longer - battery, thermal and storage health advisor for any PC. Privacy-first, offline, cross-platform."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [{ name = "Thanapat Manasom" }]
+keywords = [
+    "battery",
+    "battery-health",
+    "cli",
+    "hardware-monitoring",
+    "laptop",
+    "privacy-first",
+    "smart",
+    "sustainability",
+    "thermal",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: System :: Hardware",
+    "Topic :: System :: Monitoring",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dependencies = [
+    "typer>=0.12.0",
+    "rich>=13.7.0",
+    "psutil>=5.9.0",
+    "pydantic>=2.6.0",
+    "pydantic-settings>=2.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.6.0",
+    "mypy>=1.11",
+    "types-psutil>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/mntoyg/LapGuardian"
+Repository = "https://github.com/mntoyg/LapGuardian"
+Documentation = "https://github.com/mntoyg/LapGuardian/tree/main/docs"
+Issues = "https://github.com/mntoyg/LapGuardian/issues"
+Changelog = "https://github.com/mntoyg/LapGuardian/blob/main/CHANGELOG.md"
+
+[project.scripts]
+lapguardian = "lapguardian.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lapguardian"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/lapguardian", "tests", "docs", "README.md", "LICENSE"]
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "N",      # pep8-naming
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "A",      # flake8-builtins
+    "C4",     # flake8-comprehensions
+    "DTZ",    # flake8-datetimez - naive datetimes are a real bug class here
+    "T20",    # flake8-print - use Rich console, never print()
+    "PT",     # flake8-pytest-style
+    "RET",    # flake8-return
+    "SIM",    # flake8-simplify
+    "PTH",    # flake8-use-pathlib
+    "S",      # flake8-bandit - we shell out to OS tools, keep this on
+    "RUF",    # ruff-specific
+    "D",      # pydocstyle
+    "ANN",    # flake8-annotations
+]
+ignore = [
+    "D203",   # conflicts with D211
+    "D213",   # conflicts with D212
+    "ANN401", # allow typing.Any where genuinely needed
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "S101",   # assert is the point of a test
+    "D",      # docstrings not required in tests
+    "ANN",    # annotations not required in tests
+]
+"src/lapguardian/cli.py" = [
+    "B008",   # typer.Option() in defaults is the documented Typer pattern
+]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+# ---------------------------------------------------------------- mypy
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unreachable = true
+warn_unused_ignores = true
+disallow_any_generics = true
+no_implicit_reexport = true
+show_error_codes = true
+pretty = true
+files = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["psutil.*"]
+ignore_missing_imports = true
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config"
+markers = [
+    "windows: requires a Windows host",
+    "linux: requires a Linux host",
+    "macos: requires a macOS host",
+    "needs_battery: requires a physical battery (skipped on CI runners)",
+    "needs_admin: requires administrator or root privileges",
+]
+
+# ---------------------------------------------------------------- coverage
+[tool.coverage.run]
+source = ["src/lapguardian"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+    "@overload",
+]

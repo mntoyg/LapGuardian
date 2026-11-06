@@ -1,0 +1,42 @@
+# Normalise line endings so Windows development and Linux CI agree.
+* text=auto eol=lf
+
+# Windows-only scripts must keep CRLF to run correctly.
+*.ps1   text eol=crlf
+*.psm1  text eol=crlf
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+
+# POSIX scripts must keep LF.
+*.sh    text eol=lf
+
+# Explicit text types.
+*.py       text diff=python
+*.pyi      text diff=python
+*.md       text diff=markdown
+*.toml     text
+*.sql      text
+*.yml      text
+*.yaml     text
+*.json     text
+*.cfg      text
+*.txt      text
+LICENSE    text
+
+# Binary - never diff, never normalise.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.svg   text
+*.pdf   binary
+*.zip   binary
+*.gz    binary
+*.whl   binary
+*.db    binary
+*.sqlite3 binary
+
+# Keep generated lock files out of diffs and language stats.
+uv.lock          linguist-generated=true -diff
+docs/** linguist-documentation=true

@@ -1,0 +1,22 @@
+# .cursorindexingignore - excluded from Cursor's codebase index only.
+# Unlike .cursorignore these files may still be opened deliberately,
+# they are just not worth indexing.
+
+.venv/
+__pycache__/
+build/
+dist/
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+htmlcov/
+uv.lock
+data/
+reports/
+exports/
+*.db
+*.sqlite3
+*.log
+logs/
+tmp/

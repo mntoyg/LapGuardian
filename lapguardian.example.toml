@@ -1,0 +1,63 @@
+# LapGuardian configuration example.
+#
+# Copy this file to the location printed by `lapguardian config path`
+# and edit the values you care about. Every key is optional: anything you
+# leave out falls back to the default shown here.
+#
+# Defaults are deliberately conservative. They are starting points for a
+# typical consumer laptop, not manufacturer specifications. Tune them to
+# your own machine - a gaming laptop idles hotter than an ultrabook.
+
+[battery]
+# Battery wear = 1 - (current full-charge capacity / original design capacity).
+# A healthy battery is usually under 20% wear in its first two years.
+wear_warn_pct = 20      # advise the user to plan a replacement
+wear_critical_pct = 40  # battery is effectively worn out
+
+# Charge-habit advice. Holding a lithium-ion cell at a high state of charge
+# accelerates calendar ageing, so LapGuardian warns when the machine sits
+# plugged in and full for a long stretch.
+plugged_full_warn_hours = 6
+# Ideal long-term charge window when the laptop lives on mains power.
+ideal_charge_floor_pct = 40
+ideal_charge_ceiling_pct = 80
+# Deep discharges also shorten life.
+deep_discharge_warn_pct = 10
+
+[thermal]
+# Sustained CPU package temperature thresholds in degrees Celsius.
+cpu_temp_warn_c = 85
+cpu_temp_critical_c = 95
+# How long a reading must stay above the threshold before it counts as
+# sustained rather than a harmless spike.
+sustained_window_minutes = 5
+
+[storage]
+# Free space on the system drive. An almost-full SSD both slows down and
+# wears faster, because the controller has less room to level writes.
+free_warn_pct = 15
+free_critical_pct = 7
+# Also warn in absolute terms, for very large drives where 15% is plenty.
+free_warn_gb = 20
+
+[history]
+# Where the local SQLite database lives. Leave unset to use the platform
+# default application-data directory.
+# path = "C:/Users/you/AppData/Local/LapGuardian/history.db"
+enabled = true
+# Drop snapshots older than this. Set to 0 to keep everything forever.
+retention_days = 730
+
+[report]
+# "auto" follows the terminal, "plain" disables colour and box drawing.
+style = "auto"
+# Hide metrics the current machine cannot read at all, instead of listing
+# them as unavailable.
+hide_unavailable = false
+
+[privacy]
+# LapGuardian never makes network requests. This switch exists so that a
+# future contributor cannot quietly add one without a visible config flag.
+allow_network = false
+# Strip hostname and user paths from exported reports.
+redact_identifiers_on_export = true
